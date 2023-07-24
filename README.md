@@ -1,6 +1,5 @@
 # API-for-Tomato-Disease-Prediction-Model
-\n
-How to run?\n
+###How to run?\n
 \n
 Start the flask server by running get_img.py
 \nOnce the server is started at Port:5000
