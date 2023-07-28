@@ -3,16 +3,16 @@ from tensorflow.keras.preprocessing import image as keras_image
 from PIL import Image
 import numpy as np
 
-lbls = ['Bacterial_spot227',
-        'Early_blight227',
-        'Late_blight227',
-        'Leaf_Mold227',
-        'Septoria_leaf_spot227',
-        'Target_Spot227',
-        'Tomato_Yellow_Leaf_Curl_Virus227',
-        'Tomato_mosaic_virus227',
-        'Two-spotted_spider_mite227',
-        'healthy227']
+lbls = ['Bacterial Spot',
+        'Early Blight',
+        'Late Blight',
+        'Leaf Mold',
+        'Septoria Leaf Spot',
+        'Target Spot',
+        'Tomato Yellow Leaf Curl Virus',
+        'Tomato Mosaic Virus',
+        'Two-Spotted Spider Mite',
+        'Healthy']
 
 model = tf.keras.models.load_model('90plus.h5', compile=False)
 
@@ -25,9 +25,7 @@ def make_prediction(img):
     prediction = model.predict(img_array)
     prediction_label = np.argmax(prediction)
     prediction_val = prediction[0][prediction_label]
-    #     print(prediction)
-    x = []
-    for i in range(len(lbls)):
-        if prediction[0][i]+0.1 >= max(prediction_val, 0.2): #returns all values above 10% and within 10% of the highest probability
-            x.append(lbls[i] + ":" + str(round(prediction[0][i]*100, 2)) + "%")
-    return '\n'.join(x)
+    if prediction_val<0.1:
+        return {}
+    else:
+        return {"name":lbls[prediction_label], "probability":round(float(prediction[0][prediction_label]), 4)}
